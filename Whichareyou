@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Character Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Styles for radio button visual state */
+        input[type="radio"]:checked + label {
+            background-color: #E21E34;
+            color: #ffffff;
+            border: 2px solid #C21A2F;
+        }
+
+        /* New pulse animation */
+        @keyframes pulse-in {
+            0% { transform: scale(0.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Hide radio button circles */
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Hide all question pages by default and show the active one */
+        .question-page {
+            display: none;
+        }
+        .question-page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+    <div class="bg-white w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl p-6 sm:p-8 rounded-2xl shadow-xl flex flex-col items-center text-center">
+        <div id="start-container" class="w-full">
+            <img src="https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-12bbe42e-35b2-44cc-bff6-ed19b7035ae4.jpg?w=706&e=webp&cX=11&cY=0&cW=1894&cH=1937" alt="A beautiful fantasy banner with a question mark" class="w-full h-auto rounded-xl mb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">Which Character Are You?</h1>
+            <p class="text-gray-600 text-lg sm:text-xl mb-6">Answer 10 simple questions to discover your unique character!</p>
+            <button id="start-button" class="w-full bg-red-600 text-white font-semibold py-4 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Start Quiz</button>
+        </div>
+
+        <div id="quiz-container" class="w-full hidden">
+            <div id="progress-dots" class="flex justify-center items-center gap-2 sm:gap-4 mb-6"></div>
+            <form id="quiz-form" class="w-full">
+                <div id="q1" class="question-page active">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">1. You're tasked with organizing a town-wide event. How do you approach it?</p>
+                        <input type="radio" name="question0" value="1" id="q0-option-1">
+                        <label for="q0-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I'd come up with a lot of creative and fun plans, even if some of them are a little wacky.</label>
+                        <input type="radio" name="question0" value="2" id="q0-option-2">
+                        <label for="q0-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I'd turn it into a competition and make sure to win every single game.</label>
+                        <input type="radio" name="question0" value="3" id="q0-option-3">
+                        <label for="q0-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I'd take charge and make sure everyone gets along, even if it's a lot of work.</label>
+                        <input type="radio" name="question0" value="4" id="q0-option-4">
+                        <label for="q0-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I'd offer to provide ice cream for everyone to make them happy.</label>
+						<input type="radio" name="question0" value="5" id="q0-option-5">
+                        <label for="q0-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I’d keep things simple and make sure everyone has a comfy place to relax and chat.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q2" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">2. What do you do for fun on a sunny afternoon?</p>
+                        <input type="radio" name="question1" value="1" id="q1-option-1">
+                        <label for="q1-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I'd grab my skateboard and cruise around town, enjoying the breeze.</label>
+                        <input type="radio" name="question1" value="2" id="q1-option-2">
+                        <label for="q1-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I'd spend time in my garden, helping my plants grow and feel happy.</label>
+                        <input type="radio" name="question1" value="3" id="q1-option-3">
+                        <label for="q1-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I'd go to the local bakery and help bake some delicious treats for everyone.</label>
+                        <input type="radio" name="question1" value="4" id="q1-option-4">
+                        <label for="q1-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I'd go to the picnic in the park and eat all the food before anyone else can get to it.</label>
+						<input type="radio" name="question1" value="5" id="q1-option-5">
+                        <label for="q1-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I’d curl up under a tree with a good book and enjoy the quiet.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q3" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">3. How do you handle a family disagreement?</p>
+                        <input type="radio" name="question2" value="1" id="q2-option-1">
+                        <label for="q2-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I'm usually the one who has to step in and resolve the issue, even though it's a lot of responsibility.</label>
+                        <input type="radio" name="question2" value="2" id="q2-option-2">
+                        <label for="q2-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">My brother is always getting into trouble, so I have to be the one to bail him out.</label>
+                        <input type="radio" name="question2" value="3" id="q2-option-3">
+                        <label for="q2-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">My siblings are always bickering, so I'll try to distract them with a silly game or activity.</label>
+                        <input type="radio" name="question2" value="4" id="q2-option-4">
+                        <label for="q2-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I would probably be the one who started it by challenging someone to a game and getting too competitive.</label>
+						<input type="radio" name="question2" value="5" id="q2-option-5">
+                        <label for="q2-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I’d try to lighten the mood with a clever joke or playful distraction.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q4" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">4. What's your go-to comfort food?</p>
+                        <input type="radio" name="question3" value="1" id="q3-option-1">
+                        <label for="q3-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">Something spicy, like ramen with extra chili flakes.</label>
+                        <input type="radio" name="question3" value="2" id="q3-option-2">
+                        <label for="q3-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">A big scoop of ice cream from my own shop!</label>
+                        <input type="radio" name="question3" value="3" id="q3-option-3">
+                        <label for="q3-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">A fresh slice of toast from the bakery.</label>
+                        <input type="radio" name="question3" value="4" id="q3-option-4">
+                        <label for="q3-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">All the dishes from the cupboard! Everything is my comfort food.</label>
+						<input type="radio" name="question3" value="5" id="q3-option-5">
+                        <label for="q3-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">A hot cup of coffee or tea to soothe my nerves.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q5" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">5. You hear a new town event is happening. What's your first thought?</p>
+                        <input type="radio" name="question4" value="1" id="q4-option-1">
+                        <label for="q4-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I wonder what challenges I can win this time!</label>
+                        <input type="radio" name="question4" value="2" id="q4-option-2">
+                        <label for="q4-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I'm excited to join in and maybe mess up the events a little by accident!</label>
+                        <input type="radio" name="question4" value="3" id="q4-option-3">
+                        <label for="q4-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">Will there be spicy food? I hope there will be spicy food.</label>
+                        <input type="radio" name="question4" value="4" id="q4-option-4">
+                        <label for="q4-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I hope it's a good chance to prove that I'm the best at everything.</label>
+						<input type="radio" name="question4" value="5" id="q4-option-5">
+                        <label for="q4-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I hope it’s something creative where I can show off my unique talents</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q6" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">6. What is your go-to hobby?</p>
+                        <input type="radio" name="question5" value="1" id="q5-option-1">
+                        <label for="q5-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">Gardening—I love being with my plants.</label>
+                        <input type="radio" name="question5" value="2" id="q5-option-2">
+                        <label for="q5-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">Skateboarding—I can feel the breeze when I'm on my board.</label>
+                        <input type="radio" name="question5" value="3" id="q5-option-3">
+                        <label for="q5-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">Helping out at a bakery—I love to help make bread and other baked goods!</label>
+                        <input type="radio" name="question5" value="4" id="q5-option-4">
+                        <label for="q5-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">Watching movies, except for romantic tragedies—they are the worst.</label>
+						<input type="radio" name="question5" value="5" id="q5-option-5">
+                        <label for="q5-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">Crafting or making little gifts for my friends.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q7" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">7. You get into a fight with your sibling. What's your first move?</p>
+                        <input type="radio" name="question6" value="1" id="q6-option-1">
+                        <label for="q6-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I'd try to use my powers to win, but it would probably just cause more trouble.</label>
+                        <input type="radio" name="question6" value="2" id="q6-option-2">
+                        <label for="q6-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I would challenge them to a competition, and I wouldn't stop until I won.</label>
+                        <input type="radio" name="question6" value="3" id="q6-option-3">
+                        <label for="q6-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I'd create a new game to distract us and make everyone laugh.</label>
+                        <input type="radio" name="question6" value="4" id="q6-option-4">
+                        <label for="q6-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I’d try to calm things down and get everyone to relax, maybe with a nice cruise around town.</label>
+						<input type="radio" name="question6" value="5" id="q6-option-5">
+                        <label for="q6-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I’d take a step back and try to talk it through calmly.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q8" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">8. What do you do when you get nervous?</p>
+                        <input type="radio" name="question7" value="1" id="q7-option-1">
+                        <label for="q7-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I hide behind my best friend.</label>
+                        <input type="radio" name="question7" value="2" id="q7-option-2">
+                        <label for="q7-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I try to cheer myself up by thinking about something happy, like flowers.</label>
+                        <input type="radio" name="question7" value="3" id="q7-option-3">
+                        <label for="q7-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I get fired up and double down on whatever I'm doing to prove myself.</label>
+                        <input type="radio" name="question7" value="4" id="q7-option-4">
+                        <label for="q7-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I make sure I am well-fed before attempting anything new.</label>
+						<input type="radio" name="question7" value="5" id="q7-option-5">
+                        <label for="q7-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I take a deep breath and remind myself it’ll all work out.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q9" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">9. What's your personality type?</p>
+                        <input type="radio" name="question8" value="1" id="q8-option-1">
+                        <label for="q8-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">I'm all brawn and no brains, but I love a good challenge.</label>
+						<input type="radio" name="question8" value="2" id="q8-option-2">
+						<label for="q8-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">I'm misunderstood, with an endless appetite, and easily distracted by food.</label>
+                        <input type="radio" name="question8" value="3" id="q8-option-3">
+                        <label for="q8-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I'm serious and responsible, but sometimes my powers get me into trouble.</label>
+                        <input type="radio" name="question8" value="4" id="q8-option-4">
+                        <label for="q8-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">I'm all heart, and I love to help people and make them feel good with sweet treats.</label>
+						<input type="radio" name="question8" value="5" id="q8-option-5">
+                        <label for="q8-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">I’m thoughtful and introverted, but I love helping in quiet ways.</label>
+                    </div>
+                    <button type="button" class="next-button w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Next</button>
+                </div>
+
+                <div id="q10" class="question-page">
+                    <div class="mb-8 text-left">
+                        <p class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4"><img src="https://placehold.co/40x40/E21E34/ffffff?text=?" alt="Question icon" class="inline-block align-middle mr-2 rounded-full">10. Your favorite snack is...</p>
+                        <input type="radio" name="question9" value="1" id="q9-option-1">
+                        <label for="q9-option-1" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=A" alt="Option A icon" class="w-8 h-8 rounded mr-4">A warm, toasty slice of bread.</label>
+                        <input type="radio" name="question9" value="2" id="q9-option-2">
+                        <label for="q9-option-2" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=B" alt="Option B icon" class="w-8 h-8 rounded mr-4">Anything spicy!</label>
+                        <input type="radio" name="question9" value="3" id="q9-option-3">
+                        <label for="q9-option-3" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=C" alt="Option C icon" class="w-8 h-8 rounded mr-4">I'll take a bit of everything, please!</label>
+                        <input type="radio" name="question9" value="4" id="q9-option-4">
+                        <label for="q9-option-4" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=D" alt="Option D icon" class="w-8 h-8 rounded mr-4">Something sweet and sugary like a flower-shaped cake.</label>
+						<input type="radio" name="question9" value="5" id="q9-option-5">
+                        <label for="q9-option-5" class="option-label flex items-center p-4 mb-2 bg-gray-200 rounded-lg cursor-pointer transition-colors hover:bg-gray-300 transform hover:scale-[1.01]"><img src="https://placehold.co/30x30/f5f5f5/000000?text=E" alt="Option E icon" class="w-8 h-8 rounded mr-4">Something fruity and refreshing, like fresh berries.</label>
+                    </div>
+                    <button id="submit-button" type="button" class="w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Get My Character</button>
+                </div>
+            </form>
+            <p id="loading-message" class="hidden text-center text-gray-500 mt-8">Finding your character...</p>
+        </div>
+
+        <div id="results-container" class="w-full hidden text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">You are...</h2>
+            <h3 id="result-name" class="text-3xl sm:text-4xl font-extrabold text-red-600 mb-2"></h3>
+            <a href="#" id="result-image-link" target="_blank" class="inline-block my-4">
+                <img id="result-image" alt="Character Portrait" class="max-w-xs h-auto hover:scale-105 transition-transform duration-300 ease-in-out">
+            </a>
+            <p id="result-text" class="text-gray-600 text-lg sm:text-xl leading-relaxed mb-6"></p>
+            <button id="restart-button" class="w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors transform hover:scale-105 duration-200 ease-in-out">Take the Quiz Again</button>
+        </div>
+    </div>
+
+	<script>
+        const characterList = [
+            {
+                name: "Mafora",
+                description: "This silly red bot is always planning something new! Mafora loves to set up events and plans for all the townsfolk to join in on! Sometimes they forget they're a robot and end up messing things up on accident because of it. I guess you could say he’s a bit of a screw up in all best ways!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-9c11e4c9-461d-4406-9702-3e4850ce8a8d.png?w=433&e=webp&nll=true&cX=4&cY=0&cW=2693&cH=2698",
+                link: "https://maforajp.com/mafora"
+            },
+            {
+                name: "Wins",
+                description: "Wins is a ball of competitive energy waiting to explode. He loves to win and get involved in making fun events for his friends to compete in. If there is any sort of competition you know he’s there.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-a25a8b8f-2ecd-4b91-a3bf-9ff8f419526e.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/wins"
+            },
+            {
+                name: "Aye",
+                description: "The coolest pointed person in town, Aye can be seen chilling out anywhere nice and breezy. He’s an avid skater and loves to cruise around town on his custom built board. Due to his brother Champ’s antics he finds himself needing to bail him out of situations often.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-56feef02-ccc2-470f-b8e9-c08e9fa415f3.png?w=158&e=webp&nll=true",
+                link: "https://maforajp.com/aye"
+            },
+            {
+                name: "Doki",
+                description: "A kind girl who is all heart. Literally! Her and her best friend Ugo are always ready to help the townsfolk. She owns the local ice cream shop giving lovely treats to everyone. She loves to watch all sorts of movies except for romantic tragedies. I wonder why?",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-790529b0-180f-405e-8109-a6e0f32ffaea.png?w=444&e=webp&nll=true&cX=0&cY=0&cW=2699&cH=2637",
+                link: "https://maforajp.com/doki"
+            },
+            {
+                name: "Kamu",
+                description: "The often misunderstood Kamu is less civil than the rest of the townsfolk. His appetite is endless and is easily distracted by food. Don’t invite him to your next picnic if you value your cooking…and dishes.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-72c3ec4c-1e90-4fc4-b384-f266e3bcb4da.png?w=444&e=webp&nll=true&cX=0&cY=0&cW=2702&cH=2677",
+                link: "https://maforajp.com/kamu"
+            },
+            {
+                name: "Ugo",
+                description: "The fun flowery Ugo is the happiest friend in the town. Often seen with his best friend Doki, he will do his best to cheer up the rest of the townsfolk. In his free-time he likes to practice his gardening skills by working at Dew’s Flower Shop.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-ee6024ab-84d8-486c-84ef-cc6d5ecc5747.png?w=438&e=webp&nll=true",
+                link: "https://maforajp.com/ugo"
+            },
+            {
+                name: "Broast",
+                description: "The living slice of toast, Broast, is the beloved creation of the great Dr. No. After accidentally spilling his experimental life gifting formula on his lunch, Broast was born. He now works under the guise of Dr. No as his beloved assistant. In his spare time he works at Berri’s Bakery helping make bread and other baked goods!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-924a8dd7-3c6c-44ef-b4a9-f2ee6f10e400.png?w=440&e=webp&nll=true&cX=0&cY=1.834112149532757&cW=2687&cH=2649.3317757009345",
+                link: "https://maforajp.com/broast"
+            },
+            {
+                name: "Clue",
+                description: "The cutest cloud in the town, Clue is always watching everyone from above. She floats above the ground and is as thin as a ghost! Kamu will often confuse her for cotton candy. Probably because she is so sweet!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-cc703d08-607d-40ff-b7d8-a4baaf791762.png?w=455&e=webp&nll=true&cX=0&cY=1&cW=2672&cH=2700",
+                link: "https://maforajp.com/clue"
+            },
+            {
+                name: "Sagi",
+                description: "Sagi, the rambunctious rabbit, hops around the town looking for fun! Often seen competing against Wins in races, she is confident in her speed and jumping abilities. If you ever need to reach somewhere high feel free to ask her for a hand.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-d5a13897-dfd4-4479-8485-2b8b6d92ed02.png?w=420&e=webp&nll=true",
+                link: "https://maforajp.com/sagi"
+            },
+            {
+                name: "HQ",
+                description: "HQ is a girl that loves to solve problems and puzzles. She is always hard at work attempting to unravel some sort of mystery or solve some sort of issue. In her free time she likes to play strategy games on her computer. She owns the local arcade and runs it with her sister Switch!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-d7f873ca-b978-42a2-9a89-c6f84dea0917.png?w=432&e=webp&nll=true",
+                link: "https://maforajp.com/hq"
+            },
+            {
+                name: "Zoid",
+                description: "The quiet and reserved trapezoid loves to keep to himself. He’s a shy and awkward and often secludes himself to work on his own projects. He can often be seen building and working on new things! He cares for his friends deeply and will often make something for their birthdays to celebrate! If you see him in town don’t be afraid to say hi! Even though he will be.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-360cf8bd-436a-4887-91d4-58f03b7e08d5.png?w=428&e=webp&nll=true&cX=0&cY=2&cW=2697&cH=2516",
+                link: "https://maforajp.com/zoid"
+            },
+            {
+                name: "Fives",
+                description: "The ambitious Fives is always willing to lend a hand. His parents named him Fives even though he only has 4 fingers! He can be seen day to day making pizzas in his pizza shop. In his freetime he can be found finger painting and eating finger foods. For a guy who is one hand I’d give him two thumbs up.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-6d85fae6-080b-4adb-b8c2-1635d7a3c080.png?w=444&e=webp&nll=true&cX=0&cY=0&cW=2694&cH=2632",
+                link: "https://maforajp.com/fives"
+            },
+            {
+                name: "Alm",
+                description: "The anxious almond alm is worrisome fellow. Often finding himself in trouble wherever he seems to go, he is constantly worried about everything! Whenever there is a big party Baku somehow finds a way to blow up near him. This almond is trying to break out of his shell so try and say hi when you see him!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-dc14e865-c891-4a2c-8f37-95d6c095b99c.png?w=413&e=webp&nll=true",
+                link: "https://maforajp.com/alm"
+            },
+            {
+                name: "Ace",
+                description: "Despite his sharp edges Ace is a really nice guy. Resident softy he is often seen helping others with their activities. He spends his free time relaxing at the park and setting up picnic. His favorite foods are soft shell tacos and durian.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-af8852de-d816-4255-ae84-1cde80c31e14.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/ace"
+            },
+            {
+                name: "Mako",
+                description: "The charming Mako is a visionary who works hard to make the world a prettier place. Together with her best friend Chu she works tirelessly to ensure the comfort and satisfaction of all the customers at their spa. She is often see giving massages and painting nails. In her free time she likes to crochet new outfits and attend fashion shows!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-f12b5d69-f8a9-40ed-9730-3768119a87b1.png?w=469&e=webp&nll=true&cX=0&cY=1&cW=2700&cH=2361",
+                link: "https://maforajp.com/mako"
+            },
+            {
+                name: "Spy",
+                description: "This eyeball is always on the lookout for a new adventure. They always make plans to go on vacation and take tons of pictures! Spy runs the local museum in town and loves to showcase their sightseeing photography. He’s never in the same place too long so blink and you’ll miss him!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-b258c3c2-c75d-4a85-a452-4b7aeb5dca31.png?w=395&e=webp&nll=true",
+                link: "https://maforajp.com/spy"
+            },
+            {
+                name: "Koro",
+                description: "Koro is everyone’s favorite older brother! Even though he is new in town everyone feels like they’ve known him since childhood! In his freetime he likes to play video games and basketball! When you’re down in the dumps Koro will make a point to help out…or 3.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-1afb6fbb-02b7-4bec-9f9f-3d0aed4bfa9c.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/koro"
+            },
+            {
+                name: "Yui",
+                description: "Yui is the most business savvy in the town.They often help with businesses and manage the houses that everyone lives in. Yui owns the town bank and often negotiates with other townsfolk on prices and projects. In their free time they like to collect fancy pieces of art and eat sushi.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-89d56fec-b6eb-4388-a32a-f020c1310a11.png?w=441&e=webp&nll=true&cX=3&cY=0&cW=2699&cH=2654",
+                link: "https://maforajp.com/yui"
+            },
+            {
+                name: "Dew",
+                description: "Dew is the plant based caretaker of all the greenery in the town. She owns the local flower shop and takes care of the town park. Working alongside Ugo she sells cute and unique plants to the people. Her favorite sweets are anything matcha flavored! Dew has more than just a green thumb she’s green all over!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-41e0ec76-5e24-492c-b877-6ce542aa22c5.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/dew"
+            },
+            {
+                name: "Flip",
+                description: "These conjoined brothers are polar opposites. While they get along great their opinions are always different. If one likes something the other most certainly won't! They work great as a team however and are often treated as two people rather one! Sometimes its get to have another set of eyes!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-7e9ae344-807b-45b5-9852-0ca0e63f8230.png?w=424&e=webp&nll=true",
+                link: "https://maforajp.com/flip"
+            },
+            {
+                name: "Switch",
+                description: "Switch is the techiest girl in the town. They love building computers and are a great help in repairing machines. She is often seen working on new and fun games for the arcade! She works so fast its fixed like the flip of a switch.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-dbf19954-0901-4dab-979e-9b401466eaf4.png?w=374&e=webp&nll=true",
+                link: "https://maforajp.com/switch"
+            },
+            {
+                name: "Chai",
+                description: "The personable Chai is always trying to comfort people when they can! Despite being named after tea they are a big coffee fan. They own the local coffee shop and are an expert barista. When they’re not working and serving customers they can be seen around Berri’s Bakery looking for new items to add to the menu! At Chai’s Coffee comfort is a cup of coffee away!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-b36b9c16-1cfe-4e7c-97b4-691b50a471bf.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/chai"
+            },
+            {
+                name: "Berri",
+                description: "This sweet friend has a knack for making sweet things! Owning the bakery in town she is often making various cakes, cookies, pies, and more! With help from Broast she is able to sell out breads and more. When she’s not working she likes to read at the park and sip oolong tea.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-dd633e2c-64ee-48c5-a3e5-53fde43b2745.png?w=430&e=webp&nll=true",
+                link: "https://maforajp.com/berri"
+            },
+            {
+                name: "Champ",
+                description: "Self-appointed king of the people, Champ found a crown in a local yard sale and hasn't taken it off since! He is often seen running all over the town treating people like his royal subjects. His brother Aye is constantly apologizing on his behalf and trying to snap him out of it but Champ won't listen. Who wouldn't wanna be the king?",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-1e39d189-9167-473c-bdbf-a7f09086e907.png?w=411&e=webp&nll=true",
+                link: "https://maforajp.com/champ"
+            },
+            {
+                name: "Nato",
+                description: "This bullet has big dreams for a someone of his caliber. Wanting to protect everyone in town Nato works as the sole enforcer of good! In his free time him and his friend Baku can be seen at the campground enjoying the scenery. He’s super open to new ideas so he’ll never shoot anything down!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-ee4f10d0-40f3-4c49-bf2a-6fb64ea8a0d1.png?w=409&e=webp&nll=true&cX=2&cY=0&cW=2394&cH=2695",
+                link: "https://maforajp.com/nato"
+            },
+            {
+                name: "Axlo",
+                description: "Axlo is the most stylish girl in the town. Running her own hair salon she is hard at work making sure everyone is looking their best! She is childhood friends with Kero and often visits them in the park. She is confident in what she does and loves to show off her work!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-02d87d48-2cf2-4031-a085-8dcb08b100be.png?w=438&e=webp&nll=true",
+                link: "https://maforajp.com/axlo"
+            },
+            {
+                name: "Stix",
+                description: "This loner skeleton tries his best! Being made of bone makes him kind of dense so he often has trouble understanding things! He usually finds himself wrapped up in Pim’s pranks due to his simple nature. Despite this he is loved by all! He enjoys dark places and ube flavored ice cream.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-0acf9019-4886-4caf-8348-92ea1ff982dc.png?w=405&e=webp&nll=true",
+                link: "https://maforajp.com/stix"
+            },
+            {
+                name: "Aki",
+                description: "Aki is the capable chef of the town! He is innovative and works hard to make new and exciting dishes for all his friends! Aki owns the local restaurant and works their with his friend Giri. When he’s not working he is often working out or trying to find new ways of cooking. Sometimes ways that are a bit unusual…",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-b3f523bc-d96d-41dd-97f2-928e97154092.png?w=378&e=webp&nll=true",
+                link: "https://maforajp.com/aki"
+            },
+            {
+                name: "Dr. No",
+                description: "Dr. No is the smartest scientist around! Often seen working with his assistant Broast you will find him working on new inventions all the time in his lab! His experiments don't always go to plan but he never gives up! His real name remains a mystery, as he always said no when asked for it. That's why everyone just calls him Dr. No!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-e501c56b-a244-4518-ab48-11b82a1513ea.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/dr-no"
+            },
+            {
+                name: "Bomp",
+                description: "Bomp is the silliest goober in the town. Always cracking cheeky jokes Bomp tries his best to make everyone laugh and smile. In his freetime he likes to suntan by the beach and eat chocolate ice cream. He might be shaped like a butt but he’s never the butt of the joke!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-34802c35-a4d1-4ae3-b83e-694bcd217dcb.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/bomp"
+            },
+            {
+                name: "Kero",
+                description: "Kero’s whimsical nature can be felt by everyone in the town! This hyperactive frog loves to swim and sing! You can often find him by the lake in the park rehearsing his new songs. Whenever his childhood friend Axlo comes they love to discuss art and music! If you’re looking for a frog-tastic friend, Kero's your guy!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-2fa064c9-1759-4f8a-aaa6-64c206405bab.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/kero"
+            },
+            {
+                name: "Adam",
+                description: "Adam is the most Adam guy in the whole town. There is nothing remarkable about him. He is just Adam. If you ask for his opinion on anything he will just shrug and say whatever he thinks you want to hear. Though he doesn’t stand out in a crowd he loves to tag along to any event! If you need an Adam he sure exists!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-bae385ed-c742-427b-ad18-7f8036bb75bf.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/adam"
+            },
+            {
+                name: "Chu",
+                description: "Chu is the sassiest friend in whole the town. She works with Mako at the spa and does everyones make up! Chu is a big fan of fashion and loves to make custom accessories such as earrings, necklaces, and bracelets. She also loves to gossip and will make a point to get involved if anyone has problems. Don't spill any secrets around her. She cant keep her lips sealed!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-cca791ff-6887-4f2a-8eef-923006b48820.png?w=434&e=webp&nll=true",
+                link: "https://maforajp.com/chu"
+            },
+            {
+                name: "Giri",
+                description: "The delectable riceball Giri is the tastiest friend in town! Working alongside Aki in the restaurant he helps to make dishes for all the townsfolk. He can often be seen being chased around by Kamu who is always trying to take a bite of him! His inside flavor is a mystery!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-4d34015f-6796-4211-8259-85ee8df3db6c.png?w=433&e=webp&nll=true&cX=1&cY=0&cW=2688&cH=2692",
+                link: "https://maforajp.com/giri"
+            },
+            {
+                name: "Coco",
+                description: "Coco the cat is your favorite big sister! Best friends with Mafora the robot she is always seen hanging out with them! She likes to read manga and play video games on the couch. When she’s not relaxing she can be seen helping around the house making sure everything is nice and tidy! Casual and caring, Coco really is your purrfect companion.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-6843aa45-fd19-4709-a304-4166b49e4bca.png?w=409&e=webp&nll=true",
+                link: "https://maforajp.com/coco"
+            },
+            {
+                name: "Beck",
+                description: "Beck is a mystery. No one knows when or how he got to the town but it seems like they were always here from the start. Is he a duck? It's hard to tell. He doesn't talk either. What a strange friend.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-ea90e737-911e-41bb-836c-7ccc7ea94013.png?w=378&e=webp&nll=true",
+                link: "https://maforajp.com/beck"
+            },
+            {
+                name: "Pim",
+                description: "YThe devious demon Pim is a devilish friend indeed. Seen as the maker of mischief of the town he is always plotting his next big prank. He will often ask Stix for assistance who ends up foiling the pranks early! Even though he is always making things chaotic he is somehow always invited to everyone's birthday.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-8508721c-4762-422d-b2e3-f27618452912.png?w=450&e=webp&nll=true&cX=1&cY=0&cW=2704&cH=2440",
+                link: "https://maforajp.com/pim"
+            },
+            {
+                name: "Baku",
+                description: "Baku’s explosive personality makes him one of the most social friends in the town. Him and his girlfriend Fae can often be seen going on dates together! Sometimes he can get too comfortable with fire though. If you hear a boom in the distance it's safe to guess what happened.",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-490c7674-3fe4-4a05-8813-270616d00ff2.png?w=457&e=webp&nll=true",
+                link: "https://maforajp.com/baku"
+            },
+            {
+                name: "Fae",
+                description: "Fae is your favorite fiery friend. She was once a campfire who came to life to join the fun! Sometimes she forgets how high her flames around her boyfriend Baku leading to…explosive consequences. If you’re ever hanging out with Fae, just be sure to keep a fire extinguisher handy! Her hugs tend to be a little toasty! ",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-0a01df9a-1f7b-4252-8165-2a45bef1ed01.png?w=405&e=webp&nll=true",
+                link: "https://maforajp.com/fae"
+            },
+            {
+                name: "Dee",
+                description: "This delightful dinosaur Dee loves to go on adventures! He spends his days taking exploring the ocean with his friends. Living by the beach he spends most of his freetime fishing and repairing his boat! If you see a cool sea shell give it to him as a gift! He’ll add it to his collection of treasure!",
+                image: "https://i-p.rmcdn.net/651d2215ae21b60019215ac4/4442604/image-16ab8a93-97f9-4b36-b35a-4b861dc5af2d.png?w=579&e=webp&nll=true&cX=2&cY=0&cW=2689&cH=2650",
+                link: "https://maforajp.com/dee"
+            }
+        ];
+		
+const characterScoreMap = [
+  { name: "Mafora", minScore: 10, maxScore: 10 },
+  { name: "Bomp", minScore: 11, maxScore: 11 },
+  { name: "Pim", minScore: 12, maxScore: 12 },
+  { name: "Beck", minScore: 13, maxScore: 13 },
+  { name: "Champ", minScore: 14, maxScore: 14 },
+  { name: "Wins", minScore: 15, maxScore: 15 },
+  { name: "Sagi", minScore: 16, maxScore: 16 },
+  { name: "Koro", minScore: 17, maxScore: 17 },
+  { name: "Nato", minScore: 18, maxScore: 18 },
+
+  { name: "Aye", minScore: 19, maxScore: 19 },
+  { name: "Kero", minScore: 20, maxScore: 20 },
+  { name: "Ace", minScore: 21, maxScore: 21 },
+  { name: "Flip", minScore: 22, maxScore: 22 },
+  { name: "Zoid", minScore: 23, maxScore: 23 },
+  { name: "Spy", minScore: 24, maxScore: 24 },
+  { name: "HQ", minScore: 25, maxScore: 25 },
+  { name: "Switch", minScore: 26, maxScore: 26 },
+
+  { name: "Dr. No", minScore: 27, maxScore: 27 },
+  { name: "Aki", minScore: 28, maxScore: 28 },
+  { name: "Giri", minScore: 29, maxScore: 29 },
+  { name: "Broast", minScore: 30, maxScore: 30 },
+  { name: "Berri", minScore: 31, maxScore: 31 },
+  { name: "Kamu", minScore: 32, maxScore: 32 },
+
+  { name: "Chai", minScore: 33, maxScore: 33 },
+  { name: "Doki", minScore: 34, maxScore: 34 },
+  { name: "Ugo", minScore: 35, maxScore: 35 },
+  { name: "Dew", minScore: 36, maxScore: 36 },
+
+  { name: "Mako", minScore: 37, maxScore: 37 },
+  { name: "Axlo", minScore: 38, maxScore: 38 },
+  { name: "Chu", minScore: 39, maxScore: 39 },
+  { name: "Yui", minScore: 40, maxScore: 40 },
+
+  { name: "Fives", minScore: 41, maxScore: 41 },
+  { name: "Adam", minScore: 42, maxScore: 42 },
+  { name: "Stix", minScore: 43, maxScore: 43 },
+  { name: "Alm", minScore: 44, maxScore: 44 },
+  { name: "Coco", minScore: 45, maxScore: 45 },
+
+  { name: "Baku", minScore: 46, maxScore: 46 },
+  { name: "Fae", minScore: 47, maxScore: 47 },
+  { name: "Dee", minScore: 48, maxScore: 49 }, // 2-point slot
+  { name: "Clue", minScore: 50, maxScore: 50 }
+];
+
+
+        const questionPages = document.querySelectorAll('.question-page');
+        const startButton = document.getElementById('start-button');
+        const startContainer = document.getElementById('start-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const quizForm = document.getElementById('quiz-form');
+        const progressDotsContainer = document.getElementById('progress-dots');
+        const nextButtons = document.querySelectorAll('.next-button');
+        const submitButton = document.getElementById('submit-button');
+        const restartButton = document.getElementById('restart-button');
+        const resultName = document.getElementById('result-name');
+        const resultImage = document.getElementById('result-image');
+        const resultImageLink = document.getElementById('result-image-link');
+        const resultText = document.getElementById('result-text');
+        const loadingMessage = document.getElementById('loading-message');
+
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
+        let answers = {};
+        
+        function getCharacterByName(name) {
+            return characterList.find(c => c.name === name);
+        }
+
+        function createDots() {
+            progressDotsContainer.innerHTML = '';
+            questionPages.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('w-3', 'h-3', 'rounded-full', 'transition-all', 'duration-300', 'ease-in-out', 'sm:w-4', 'sm:h-4');
+                dot.classList.add('bg-gray-400');
+                if (index === 0) {
+                    dot.classList.add('bg-red-600', 'transform', 'scale-125', 'ring-2', 'ring-red-300', 'ring-opacity-75');
+                }
+                progressDotsContainer.appendChild(dot);
+            });
+        }
+
+        function updateDots() {
+            const dots = progressDotsContainer.children;
+            Array.from(dots).forEach((dot, index) => {
+                dot.classList.remove('bg-red-600', 'transform', 'scale-125', 'ring-2', 'ring-red-300', 'ring-opacity-75');
+                dot.classList.add('bg-gray-400');
+                if (index === currentQuestionIndex) {
+                    dot.classList.remove('bg-gray-400');
+                    dot.classList.add('bg-red-600', 'transform', 'scale-125', 'ring-2', 'ring-red-300', 'ring-opacity-75');
+                }
+            });
+        }
+
+        function showQuestion(index) {
+            questionPages.forEach((page, i) => {
+                page.classList.remove('active');
+                if (i === index) {
+                    page.classList.add('active');
+                }
+            });
+            updateDots();
+        }
+
+        function handleNextClick() {
+            const questionName = `question${currentQuestionIndex}`;
+            const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+            if (selectedOption) {
+                answers[questionName] = selectedOption.value;
+                if (currentQuestionIndex < questionPages.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion(currentQuestionIndex);
+                }
+            } else {
+                alert("Please select an option before proceeding.");
+            }
+        }
+
+        function calculateResults() {
+    const questionName = `question${currentQuestionIndex}`;
+    const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+    if (!selectedOption) {
+        alert("Please select an option before getting your result!");
+        return;
+    }
+    answers[questionName] = selectedOption.value;
+
+    quizContainer.style.display = 'none';
+    loadingMessage.style.display = 'block';
+
+    // Sum total score
+    let totalScore = 0;
+    for (const key in answers) {
+        totalScore += parseInt(answers[key], 10);
+    }
+
+    // Find matching character by score range
+    const match = characterScoreMap.find(
+        c => totalScore >= c.minScore && totalScore <= c.maxScore
+    );
+
+    const result = match ? getCharacterByName(match.name) : null;
+
+    setTimeout(() => {
+        if (result) {
+            resultName.textContent = result.name;
+            resultImage.src = result.image;
+            resultImageLink.href = result.link;
+            resultText.innerHTML = result.description;
+        } else {
+            resultName.textContent = "Oops!";
+            resultImage.src = "";
+            resultImageLink.href = "#";
+            resultText.innerHTML = "Something went wrong! Please try the quiz again.";
+        }
+
+        loadingMessage.style.display = 'none';
+        resultsContainer.style.display = 'block';
+    }, 1000);
+}
+
+        function restartQuiz() {
+            quizForm.reset();
+            currentQuestionIndex = 0;
+            answers = {};
+            showQuestion(currentQuestionIndex);
+            quizContainer.style.display = 'block';
+            resultsContainer.style.display = 'none';
+        }
+
+        startButton.addEventListener('click', () => {
+            startContainer.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            showQuestion(0);
+        });
+
+        nextButtons.forEach(button => {
+            button.addEventListener('click', handleNextClick);
+        });
+        submitButton.addEventListener('click', calculateResults);
+        restartButton.addEventListener('click', restartQuiz);
+
+        window.onload = () => {
+            createDots();
+        };
+    </script>
+</body>
+</html>
